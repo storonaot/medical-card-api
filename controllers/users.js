@@ -31,12 +31,17 @@ function signUp(req, res, next) {
   })
 }
 
+function signOut(req, res, next) {
+  req.session.destroy()
+  res.send({})
+}
+
 function show(req, res, next) {
-  console.log('show')
   if (req.user) res.send(getUserData(req.user))
   else res.send(null)
 }
 
 exports.signIn = signIn
 exports.signUp = signUp
+exports.signOut = signOut
 exports.show = show

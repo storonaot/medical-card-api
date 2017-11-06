@@ -44,7 +44,7 @@ const UserSchema = new Schema({
     type: Date,
     default: Date.now
   }
-})
+}, { collection: 'user' })
 
 UserSchema.methods.encryptPassword = function(passPhrase) {
   return crypto.createHmac('sha1', this.salt).update(passPhrase).digest('hex')
