@@ -1,0 +1,22 @@
+{
+  "port": 3000,
+  "mongoose": {
+    "uri": "mongodb://localhost/medical_card",
+    "options": {
+      "server": {
+        "soketOptions": {
+          "keepAlive": 1
+        }
+      }
+    }
+  },
+  "session": {
+    "secret": "KillerIsJim",
+    "key": "sid",
+    "cookie": {
+      "path": "/",
+      "httpOnly": true,
+      "maxAge": null
+    }
+  }
+}

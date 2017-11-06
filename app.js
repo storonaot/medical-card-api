@@ -1,8 +1,22 @@
 const express = require('express')
 const path = require('path')
 const bodyParser = require('body-parser')
+const session = require('express-session')
+const cookieParser = require('cookie-parser')
+const checkAuth = require('./middleware/checkAuth')
+
+const config = require('./config')
+const db = require('./db')
+
+const errorhandler = require('errorhandler')
+const HttpError = require('./error').HttpError
 
 const app = express()
+app.set('port', config.get('port'))
+
+const index = require('./routes/index')
+const auth = require('./routes/auth')
+const user = require('./routes/user')
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*')
@@ -17,10 +31,45 @@ app.use(bodyParser.urlencoded({
   extended: true
 }))
 
-app.get('/', (req, res) => {
-  res.send('hi')
+app.use(cookieParser())
+
+const MongoStore = require('connect-mongo')(session)
+app.use(session({
+  secret: config.get('session:secret'),
+  key: config.get('session:key'),
+  cookie: config.get('session:cookie'),
+  resave: true,
+  saveUninitialized: true,
+  store: new MongoStore({ mongooseConnection: db.connection })
+}))
+
+app.use(require('./middleware/sendHttpError'))
+app.use(require('./middleware/loadUser'))
+
+app.use('/api/v1/', index)
+app.use('/api/v1/auth/', auth)
+app.use('/api/v1/user/', checkAuth, user)
+
+app.use((err, req, res, next) => {
+  if (typeof err === 'number') {
+    err = new HttpError(err)
+  }
+
+  if (err instanceof HttpError) {
+    res.sendHttpError(err)
+  } else {
+    if (app.get('env') === 'development') {
+      errorhandler()(err, req, res, next)
+    } else {
+      console.error(err)
+      err = new HttpError(500)
+      res.sendHttpError(err)
+    }
+  }
 })
 
-app.listen(3000, () => {
-  console.log('Example app listening on port 3000!')
+const port = app.get('port')
+
+app.listen(port, () => {
+  console.log('Example App listening on port ' + port + '!')
 })
