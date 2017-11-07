@@ -41,7 +41,19 @@ function show(req, res, next) {
   else res.send(null)
 }
 
+function update(req, res, next) {
+  User.update(
+    { _id: req.params.id },
+    { personalInfo: req.body },
+    (err, affected, newUser) => {
+      if (err) return next(err)
+      res.send(newUser)
+    }
+  )
+}
+
 exports.signIn = signIn
 exports.signUp = signUp
 exports.signOut = signOut
 exports.show = show
+exports.update = update

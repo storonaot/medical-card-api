@@ -20,22 +20,26 @@ const UserSchema = new Schema({
   isDoctor: {
     type: Boolean
   },
-  personalInfo: {
-    type: String,
+  personalInfo:{
+    type: Schema.Types.Mixed,
     default: null
   },
   hashedPassPhrase: {
     type: String,
     required: true
   },
-  appPubKey: {
+  pubKey: {
     type: String,
-    default: null,
+    default: null
   },
-  ethereumPubKey: {
-    type: String,
-    default: null,
-  },
+  // appPubKey: {
+  //   type: String,
+  //   default: null,
+  // },
+  // ethereumPubKey: {
+  //   type: String,
+  //   default: null,
+  // },
   salt: {
     type: String,
     required: true
@@ -77,16 +81,3 @@ UserSchema.statics.authorize = function(login, passPhrase, callback) {
 }
 
 exports.User = db.model('User', UserSchema)
-
-// function AuthError(message) {
-//   Error.apply(this, arguments)
-//   Error.captureStackTrace(this, AuthError)
-//
-//   this.message = message
-// }
-//
-// util.inherits(AuthError, Error)
-//
-// AuthError.prototype.name = 'AuthError'
-//
-// exports.AuthError = AuthError
