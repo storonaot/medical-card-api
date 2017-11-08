@@ -6,6 +6,8 @@ const getUserData = (user) => ({
   isDoctor: user.isDoctor,
   login: user.login,
   personalInfo: user.personalInfo,
+  photo: user.photo,
+  pubKey: user.pubKey,
   _id: user._id
 })
 
@@ -41,19 +43,33 @@ function show(req, res, next) {
   else res.send(null)
 }
 
-function update(req, res, next) {
-  User.update(
-    { _id: req.params.id },
-    { personalInfo: req.body },
-    (err, affected, newUser) => {
-      if (err) return next(err)
-      res.send(newUser)
-    }
-  )
+function updatePersonalInfo(req, res, next) {
+    User.findOneAndUpdate(
+      { _id: req.params.id },
+      { personalInfo: req.body },
+      { new: true },
+      (err, newUser) => {
+        if (err) return next(err)
+        res.send(newUser)
+      }
+    )
 }
+
+// function update(req, res, next) {
+//   User.findOneAndUpdate(
+//     { _id: req.params.id },
+//     { $set: req.body },
+//     { upsert: true },
+//     (err, User) => {
+//       if (err) return next(err)
+//       res.send(User)
+//     }
+//   )
+// }
 
 exports.signIn = signIn
 exports.signUp = signUp
 exports.signOut = signOut
 exports.show = show
-exports.update = update
+// exports.update = update
+exports.updatePersonalInfo = updatePersonalInfo

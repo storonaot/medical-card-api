@@ -32,6 +32,9 @@ const UserSchema = new Schema({
     type: String,
     default: null
   },
+  photo: {
+    type: String
+  },
   // appPubKey: {
   //   type: String,
   //   default: null,
