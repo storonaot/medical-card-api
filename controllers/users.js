@@ -43,10 +43,10 @@ function show(req, res, next) {
   else res.send(null)
 }
 
-function updatePersonalInfo(req, res, next) {
+function update(req, res, next) {
     User.findOneAndUpdate(
       { _id: req.params.id },
-      { personalInfo: req.body },
+      { $set: req.body },
       { new: true },
       (err, newUser) => {
         if (err) return next(err)
@@ -71,5 +71,4 @@ exports.signIn = signIn
 exports.signUp = signUp
 exports.signOut = signOut
 exports.show = show
-// exports.update = update
-exports.updatePersonalInfo = updatePersonalInfo
+exports.update = update

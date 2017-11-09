@@ -5,6 +5,6 @@ const Users = require('../controllers/users')
 
 router.get('/', Users.show)
 // router.put('/:id', Users.update)
-router.put('/personal-info/:id', Users.updatePersonalInfo)
+router.put('/:id', Users.update)
 
 module.exports = router
