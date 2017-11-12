@@ -4,7 +4,6 @@ const HttpError = require('../error').HttpError
 function create(req, res, next) {
   Request.find(req.body).exec((err, request) => {
     if (err) return next(err)
-    // if (request.length) return res.status(400).send({ error: 'Request exist yet.' });
     if (request.length) return next(new HttpError(400, 'Request exist yet.'))
     const newRequest = new Request(req.body)
     newRequest.save((err, request) => {
@@ -24,9 +23,13 @@ function list(req, res, next) {
     })
 }
 
+function remove(req, res, next) {
+  Request.findOneAndRemove({ _id: req.params.id }, (err, request) => {
+    if (err) return next(err)
+    res.status(200).send()
+  })
+}
+
 exports.create = create
 exports.list = list
-
-// Data.find( { $query: { user: req.user }, $orderby: { dateAdded: -1 } } function ( results ) {
-//     ...
-// })
+exports.remove = remove
