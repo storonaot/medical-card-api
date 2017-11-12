@@ -17,6 +17,7 @@ app.set('port', config.get('port'))
 const index = require('./routes/index')
 const auth = require('./routes/auth')
 const user = require('./routes/user')
+const request = require('./routes/request')
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*')
@@ -49,6 +50,7 @@ app.use(require('./middleware/loadUser'))
 app.use('/api/v1/', index)
 app.use('/api/v1/auth/', auth)
 app.use('/api/v1/user/', checkAuth, user)
+app.use('/api/v1/request/', checkAuth, request)
 
 app.use((err, req, res, next) => {
   if (typeof err === 'number') {
