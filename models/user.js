@@ -28,21 +28,17 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
-  pubKey: {
+  ethAddress: {
+    type: String,
+    default: null
+  },
+  publicPEM: {
     type: String,
     default: null
   },
   photo: {
     type: String
   },
-  // appPubKey: {
-  //   type: String,
-  //   default: null,
-  // },
-  // ethereumPubKey: {
-  //   type: String,
-  //   default: null,
-  // },
   salt: {
     type: String,
     required: true
