@@ -46,6 +46,7 @@ function signOut(req, res, next) {
 }
 
 function show(req, res, next) {
+  // console.log('IO', req.app.get('io'))
   if (req.user) res.send(getUserData(req.user))
   else res.send(null)
 }

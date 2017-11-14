@@ -1,10 +1,10 @@
 const express = require('express')
 const path = require('path')
+const http = require('http')
 const bodyParser = require('body-parser')
 const session = require('express-session')
 const cookieParser = require('cookie-parser')
 const checkAuth = require('./middleware/checkAuth')
-
 const config = require('./config')
 const db = require('./db')
 
@@ -72,6 +72,10 @@ app.use((err, req, res, next) => {
 
 const port = app.get('port')
 
-app.listen(port, () => {
+const server = http.createServer(app)
+server.listen(port, () => {
   console.log('Example App listening on port ' + port + '!')
 })
+
+const io = require('./socket')(server)
+app.set('io', io)
