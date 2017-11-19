@@ -4,7 +4,7 @@ const router = express.Router()
 const Transaction = require('../controllers/transactions')
 
 // router.get('/list/:type', MedicalCard.list)
-// router.get('/:id', MedicalCard.show)
+router.get('/', Transaction.show)
 router.post('/', Transaction.create)
 // router.delete('/:id', MedicalCard.remove)
 router.put('/:id', Transaction.update)

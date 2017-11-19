@@ -11,7 +11,7 @@ const TransactionSchema = new Schema({
   },
   txs: {
     type: Array,
-    default: null
+    default: []
   }
 }, { collection: 'transaction' })
 
