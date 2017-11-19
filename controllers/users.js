@@ -11,7 +11,7 @@ const getUserData = (user) => {
       photo: user.photo,
       pubKey: user.pubKey,
       ethAddress: user.ethAddress,
-      publicPEM: user.publicPEM,
+      publicKey: user.publicKey,
       _id: user._id
     }
   }

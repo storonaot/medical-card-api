@@ -32,7 +32,7 @@ const UserSchema = new Schema({
     type: String,
     default: null
   },
-  publicPEM: {
+  publicKey: {
     type: String,
     default: null
   },
