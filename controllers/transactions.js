@@ -4,7 +4,7 @@ function create(req, res, next) {
   const _patient = req.session.user
   const newTransactions = new Transaction({
     _patient: _patient,
-    txs: null
+    txs: []
   })
   newTransactions.save((err, newTxs) => {
     if (err) return next(err)
@@ -27,7 +27,7 @@ function update(req, res, next) {
 
 function show(req, res, next) {
   const patientId = req.session.user
-  Transaction.find({ _patient: patientId })
+  Transaction.findOne({ _patient: patientId })
     .exec((err, txs) => {
       if (err) return next(err)
       res.json(txs)
