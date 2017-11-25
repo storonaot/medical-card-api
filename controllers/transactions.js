@@ -1,5 +1,7 @@
 const Transaction = require('../models/transaction').Transaction
 
+const io = req => req.app.get('io')
+
 function create(req, res, next) {
   const _patient = req.session.user
   const newTransactions = new Transaction({
@@ -13,6 +15,7 @@ function create(req, res, next) {
 }
 
 function update(req, res, next) {
+  const _req = req
   const _patient = req.params.id
   Transaction.findOneAndUpdate(
     { _patient: _patient },
@@ -20,6 +23,7 @@ function update(req, res, next) {
     { new: true },
     (err, txs) => {
       if (err) return next(err)
+      io(_req).sockets.emit('transaction', { type: 'add', data: txs })
       res.send(txs)
     }
   )
