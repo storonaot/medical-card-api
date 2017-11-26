@@ -7,6 +7,6 @@ router.get('/list/:type', MedicalCard.list)
 router.get('/:id', MedicalCard.show)
 router.post('/', MedicalCard.create)
 router.delete('/:id', MedicalCard.remove)
-router.put('/:id', MedicalCard.update)
+router.put('/:to', MedicalCard.update)
 
 module.exports = router

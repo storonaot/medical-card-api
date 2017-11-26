@@ -2,20 +2,22 @@ const User = require('../models/user').User
 const HttpError = require('../error').HttpError
 
 const getUserData = (user) => {
-  if (user) {
-    return {
-      email: user.email,
-      isDoctor: user.isDoctor,
-      login: user.login,
-      personalInfo: user.personalInfo,
-      photo: user.photo,
-      pubKey: user.pubKey,
-      ethAddress: user.ethAddress,
-      publicKey: user.publicKey,
-      _id: user._id
-    }
-  }
-  return null
+  return user || null
+  // if (user) {
+  //   return {
+  //     email: user.email,
+  //     isDoctor: user.isDoctor,
+  //     login: user.login,
+  //     personalInfo: user.personalInfo,
+  //     photo: user.photo,
+  //     pubKey: user.pubKey,
+  //     ethAddress: user.ethAddress,
+  //     publicKey: user.publicKey,
+  //     _id: user._id,
+  //     medicalCard: user.medicalCard
+  //   }
+  // }
+  // return null
 }
 
 function signIn(req, res, next) {
@@ -52,9 +54,10 @@ function show(req, res, next) {
 }
 
 function update(req, res, next) {
+  const data = Object.assign(req.body, { updated: Date.now() } )
   User.findOneAndUpdate(
     { _id: req.params.id },
-    { $set: req.body },
+    { $set: data },
     { new: true },
     (err, newUser) => {
       if (err) return next(err)

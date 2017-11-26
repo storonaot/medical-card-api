@@ -56,7 +56,22 @@ function update(req, res, next) {
   )
 }
 
+function getByParams(req, res, next) {
+  Request.find({ _to: req.params.to, status: 'success' })
+    .populate('_from')
+    .exec((err, requests) => {
+      if (err) return next(err)
+      res.json(requests.map(req => (
+        {
+          _doctor: req._from._id,
+          publicKey: req._from.publicKey
+        }
+      )))
+    })
+}
+
 exports.create = create
 exports.list = list
 exports.remove = remove
 exports.update = update
+exports.getByParams = getByParams

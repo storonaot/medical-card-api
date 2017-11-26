@@ -17,9 +17,14 @@ function create(req, res, next) {
 function update(req, res, next) {
   const _req = req
   const _patient = req.params.id
+
   Transaction.findOneAndUpdate(
     { _patient: _patient },
-    { $push: { txs: req.body.tx } },
+    {
+      $set: { updated: Date.now() },
+      $push: { txs: req.body.tx }
+    },
+    // { $push: { txs: req.body.tx } },
     { new: true },
     (err, txs) => {
       if (err) return next(err)

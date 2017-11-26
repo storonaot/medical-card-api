@@ -1,6 +1,6 @@
 const MedicalCard = require('../models/medicalCard').MedicalCard
 const Request = require('../models/request').Request
-
+const async = require('async')
 const io = req => req.app.get('io')
 
 function create(req, res, next) {
@@ -61,7 +61,22 @@ function remove(req, res, next) {
 }
 
 function update(req, res, next) {
-
+  const medCards = []
+  async.each(req.body, (item, callback) => {
+    MedicalCard.update(
+      { _doctor: item._doctor },
+      { $set: { medicalCard: item.medicalCard } },
+      { new: true },
+      (err, medCard) => {
+        if (err) return callback(err)
+        medCards.push(medCard)
+        callback()
+      }
+    )
+  }, (err) => {
+    if (err) return next(err)
+    res.json(medCards)
+  })
 }
 
 exports.create = create

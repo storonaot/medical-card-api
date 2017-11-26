@@ -12,6 +12,10 @@ const TransactionSchema = new Schema({
   txs: {
     type: Array,
     default: []
+  },
+  updated: {
+    type: Number,
+    default: Date.now()
   }
 }, { collection: 'transaction' })
 

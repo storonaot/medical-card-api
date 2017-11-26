@@ -1,6 +1,5 @@
 const crypto = require('crypto')
 const async = require('async')
-// const util = require('util')
 const HttpError = require('../error').HttpError
 
 const db = require('../db')
@@ -20,8 +19,12 @@ const UserSchema = new Schema({
   isDoctor: {
     type: Boolean
   },
-  personalInfo:{
+  personalInfo: {
     type: Schema.Types.Mixed,
+    default: null
+  },
+  medicalCard: {
+    type: String,
     default: null
   },
   hashedPassPhrase: {
@@ -42,6 +45,10 @@ const UserSchema = new Schema({
   salt: {
     type: String,
     required: true
+  },
+  updated: {
+    type: Number,
+    default: Date.now()
   },
   created: {
     type: Date,
