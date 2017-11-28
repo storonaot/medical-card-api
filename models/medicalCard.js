@@ -14,9 +14,9 @@ const MedicalCardSchema = new Schema({
     ref: 'User',
     required: true
   },
-  medicalCard: {
-    type: String,
-    default: null,
+  records: {
+    type: Array,
+    default: [],
   }
 }, { collection: 'medical-card' })
 

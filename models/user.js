@@ -24,8 +24,8 @@ const UserSchema = new Schema({
     default: null
   },
   medicalCard: {
-    type: String,
-    default: null
+    type: Array,
+    default: []
   },
   hashedPassPhrase: {
     type: String,
