@@ -16,7 +16,7 @@ function create(req, res, next) {
         if (err) return next(err)
         io(_req).sockets.emit('medicalCard', { type: 'create', data: _medicalCard })
       })
-    res.send(medicalCard._id)
+    res.send(medicalCard)
   })
 }
 
@@ -60,29 +60,21 @@ function remove(req, res, next) {
   )
 }
 
-// LoyaltyCard.findOneAndUpdate(
-//         {business: businessid},
-//         {$set: newCard, $inc: {stamps: +1}},
-//         {upsert: true}
-//     )
-//     .populate('user')
-//     .exec(function(err, card) {
-//         if (err) {
-//             // ...
-//         } else {
-//             res.json(result);
-//         }
-// });
-
 function update(req, res, next) {
+  console.log('update')
+  { $and: [ { price: { $ne: 1.99 } }, { price: { $exists: true } } ] }
   const _req = req
   const medCards = []
+  const patientId = req.session.user
+
   async.each(req.body, (item, callback) => {
     // MedicalCard.findOneAndUpdate(
-    //   { _doctor: item._doctor },
+    //   // { _doctor: item._doctor },
+    //   { $and: [{ _doctor: item._doctor }, { _patient: patientId } ] },
     //   { $set: { records: item.records } },
     //   { new: true },
     //   (err, medCard) => {
+    //     console.log('medCard', medCard)
     //     if (err) return callback(err)
     //     medCards.push(medCard)
     //     io(_req).sockets.emit('medicalCard', { type: 'update', data: medCard })
@@ -90,12 +82,13 @@ function update(req, res, next) {
     //   }
     // )
     MedicalCard.findOneAndUpdate(
-      { _doctor: item._doctor },
+      { $and: [{ _doctor: item._doctor }, { _patient: patientId } ] },
       { $set: { records: item.records } },
       { new: true }
     )
       .populate('_patient')
       .exec((err, medCard) => {
+        console.log('err', err)
         if (err) return callback(err)
         medCards.push(medCard)
         io(_req).sockets.emit('medicalCard', { type: 'update', data: medCard })
